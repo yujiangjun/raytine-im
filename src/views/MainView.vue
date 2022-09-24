@@ -13,6 +13,6 @@
 <script setup lang="ts">
     import { RouterView } from 'vue-router';
     import { ref, type Ref } from 'vue';
-    const active:Ref<number> = ref(1)
+    const active:Ref<number> = ref(0)
     
 </script>

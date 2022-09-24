@@ -1,12 +1,14 @@
 <template>
-    <div>
-        <div style="display: flex;">
-            <van-image :src="avator"/>
-            <label>{{username}}：</label>
-            <label>{{sendTime}}</label>
-        </div>
+    <div class="display_flex">
+        <van-image :radius="5" :src="avator" class="avator_small"/>
         <div>
-            {{mesContent}}
+            <div class="ml_20">
+                <label>{{username}}：</label>
+                <label>{{mesContent}}</label>
+            </div>
+            <div class="ml_20">
+            时间： {{sendTime}}
+            </div>
         </div>
     </div>
 </template>

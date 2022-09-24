@@ -9,7 +9,7 @@ const onSubmit = (values: any) => {
     console.log('submit', values)
     Toast('登录成功')
     router.push({
-        path: 'main'
+        path: 'main/session'
     })
 }
 </script>

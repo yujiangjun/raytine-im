@@ -1,6 +1,6 @@
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
-import {Button,Field, CellGroup,Form ,Image as VanImage,Toast,Tabbar, TabbarItem,List  } from 'vant'
+import {Button,Field, CellGroup,Form ,Image as VanImage,Toast,Tabbar, TabbarItem,List,Col, Row  } from 'vant'
 
 import App from './App.vue'
 import router from './router'
@@ -23,5 +23,7 @@ app.use(Toast)
 app.use(Tabbar)
 app.use(TabbarItem)
 app.use(List)
+app.use(Col)
+app.use(Row)
 
 app.mount('#app')

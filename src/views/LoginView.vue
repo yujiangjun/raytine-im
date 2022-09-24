@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import loginPng from "@/assets/OIP-C.jpg";
-import { Toast } from "vant"
+import { Toast } from "vant";
 import router from "@/router";
 const username = ref("");
 const password = ref("");

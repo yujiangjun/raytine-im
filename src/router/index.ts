@@ -50,6 +50,11 @@ const router = createRouter({
         },
       ],
     },
+    {
+      path: "/singleChat",
+      name: "singleChat",
+      component: () => import("../views/chat/SingleChatView.vue"),
+    },
   ],
 });
 

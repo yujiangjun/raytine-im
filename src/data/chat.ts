@@ -20,7 +20,7 @@ class ChatUser {
 const fun = function (): Array<ChatUser> {
   const chats: Array<ChatUser> = [];
 
-  for (let index = 0; index < 10; index++) {
+  for (let index = 0; index < 50; index++) {
     chats.push({
       avator: loginPng,
       mesContent: "hello" + index,

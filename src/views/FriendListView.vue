@@ -8,6 +8,7 @@ const firends = reactive(getFriends());
   <div>
     <FriendItem
       v-for="item in firends"
+      :key="item.userId"
       :avator="item.avator"
       :user-name="item.userName"
       :user-id="item.userId"

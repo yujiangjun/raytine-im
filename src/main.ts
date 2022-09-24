@@ -14,16 +14,20 @@ import {
   Row,
   Icon,
   Divider,
+  NavBar,
 } from "vant";
 
 import App from "./App.vue";
 import router from "./router";
+
+import { useRoute } from "vue-router";
 
 import "./assets/main.css";
 import "./assets/chat.css";
 import "vant/lib/index.css";
 
 const app = createApp(App);
+app.use(useRoute);
 
 app.use(createPinia());
 app.use(router);
@@ -40,5 +44,6 @@ app.use(Col);
 app.use(Row);
 app.use(Icon);
 app.use(Divider);
+app.use(NavBar);
 
 app.mount("#app");

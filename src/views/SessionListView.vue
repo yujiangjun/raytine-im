@@ -2,15 +2,7 @@
 import { reactive, ref } from 'vue';
 import SessionItem from '../components/SessionItem.vue';
 import {fun} from '../data/chat'
-// import loginPng from '@/assets/OIP-C.jpg'
-// const avator = ref(loginPng)
-// const username = ref('yujiangjuan')
-// const mesContent = ref('hello')
-// const sendTime = ref('2022-09-12 00:00:00')
 const sessions = reactive(fun())
-
-// const chats = fun()
-// console.log(chats)
 </script>
 <template>
     <div>

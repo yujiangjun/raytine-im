@@ -2,6 +2,7 @@ import type {
   AxiosError,
   AxiosInstance,
   AxiosPromise,
+  AxiosRequestConfig,
   AxiosResponse,
 } from "axios";
 import { getBaseUrl, getToken } from "@/util/auth";
@@ -34,7 +35,7 @@ class HttpService {
   }
 
   private addInterceptors(http: AxiosInstance) {
-    http.interceptors.request.use((config) => {
+    http.interceptors.request.use((config: AxiosRequestConfig) => {
       const token = getToken();
       if (token) {
         config.headers["Authorization"] = "Bearer " + token;
@@ -48,7 +49,6 @@ class HttpService {
             }, 1000);
             break;
           default:
-            console.warn(`status= ${status}`);
             break;
         }
         return status >= 200 && status < 400;
@@ -75,6 +75,30 @@ class HttpService {
           ...error.response?.data,
         };
       });
+  }
+
+  get<T>(url: string, config?: AxiosRequestConfig) {
+    return this.handleErrorWrapper<T>(this.http.get(url, config));
+  }
+
+  post<T>(url: string, param: unknown, config?: AxiosRequestConfig) {
+    return this.handleErrorWrapper<T>(this.http.post(url, param, config));
+  }
+
+  postDownload<T>(url: string, param: unknown) {
+    return this.handleErrorWrapper<T>(
+      this.http.post(url, param, { responseType: "arraybuffer" })
+    );
+  }
+
+  put<T>(url: string, param: unknown, config?: AxiosRequestConfig) {
+    return this.handleErrorWrapper<T>(this.http.put(url, param, config));
+  }
+
+  delete<T>(url: string, param: unknown, config?: AxiosRequestConfig) {
+    return this.handleErrorWrapper<T>(
+      this.http.delete(url, { data: param, ...config })
+    );
   }
 }
 

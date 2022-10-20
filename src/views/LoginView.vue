@@ -3,11 +3,19 @@ import { ref } from "vue";
 import loginPng from "@/assets/OIP-C.jpg";
 import { Toast } from "vant";
 import router from "@/router";
+import { Login } from "@/api/login";
+import { setToken } from "@/util/auth";
 const username = ref("");
 const password = ref("");
-const onSubmit = (values: any) => {
+const onSubmit = async (values: any) => {
   console.log("submit", values);
   Toast("登录成功");
+  let token = await Login({
+    userCode: username.value,
+    password: password.value,
+  });
+  setToken(token.data);
+  console.log(token);
   router.push({
     path: "main/session",
   });

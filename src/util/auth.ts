@@ -3,7 +3,10 @@ function getBaseUrl() {
 }
 
 function getToken() {
-  return "";
+  return localStorage.getItem("token");
+}
+function setToken(token: string) {
+  localStorage.setItem("token", token);
 }
 
-export { getBaseUrl, getToken };
+export { getBaseUrl, getToken, setToken };

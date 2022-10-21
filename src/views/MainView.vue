@@ -1,6 +1,8 @@
 <template>
   <div>
-    <RouterView></RouterView>
+    <Suspense>
+      <RouterView></RouterView>
+    </Suspense>
     <van-tabbar v-model="active">
       <van-tabbar-item replace to="session" icon="home-o">聊天</van-tabbar-item>
       <van-tabbar-item replace to="friends" icon="friends-o"

@@ -5,7 +5,7 @@ import type {
   AxiosRequestConfig,
   AxiosResponse,
 } from "axios";
-import { getBaseUrl, getToken } from "@/util/auth";
+import { getToken } from "@/util/auth";
 import type { Response } from "@/types/response";
 import axios from "axios";
 import axiosRetry from "axios-retry";
@@ -14,7 +14,6 @@ class HttpService {
   private http!: AxiosInstance;
   constructor() {
     this.http = axios.create({
-      baseURL: getBaseUrl(),
       timeout: 60000,
     });
     axiosRetry(this.http, {
@@ -38,7 +37,7 @@ class HttpService {
     http.interceptors.request.use((config: AxiosRequestConfig) => {
       const token = getToken();
       if (token) {
-        config.headers["Authorization"] = "Bearer " + token;
+        config.headers["token"] = token;
       }
       config.validateStatus = (status) => {
         switch (status) {

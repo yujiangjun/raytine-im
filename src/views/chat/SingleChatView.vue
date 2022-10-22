@@ -2,7 +2,7 @@
   <van-row>
     <van-col :span="24">
       <van-nav-bar
-        :title="my.userName"
+        :title="friend.userName"
         left-text="返回"
         left-arrow
         @click-left="onBack"
@@ -12,7 +12,7 @@
   <van-row>
     <van-col :span="24" class="send_view">
       <MessageItem
-        v-for="item in demoMes"
+        v-for="item in demoMes.msgs"
         :key="item.msgId"
         :avator="item.targetAvatar"
         :dict="item.dict"
@@ -46,32 +46,34 @@
 import router from "@/router";
 import { onMounted, reactive, ref, type Ref } from "vue";
 import { useRoute } from "vue-router";
-// import { getDemoMes } from "@/util/cht";
 import type { Account } from "@/types/friends";
 import MessageItem from "@/components/MessageItem.vue";
 import WSService from "@/ws";
 import { getUserInfo } from "@/api/account";
 import storeUser from "@/stores/user";
 import type { MessageData } from "@/types/message";
+import dayjs from 'dayjs';
 const my = reactive(storeUser());
 const targentId = ref(useRoute().query.targetId);
-const demoMes: MessageData[] = [];
+const demoMes = reactive({
+  msgs: [] as MessageData[],
+});
 const sendContent: Ref<string> = ref("");
-let friend: Account;
+let friend: Account = reactive({} as Account);
 onMounted(async () => {
-  console.log("mouted");
-  let targentId = useRoute().query.targetId;
-  console.log("targetId:", targentId);
   getUser();
-  // console.log(resp);
   WSService.Instance.connect(my.id);
 });
 async function getUser() {
   let resp = await getUserInfo({
     id: targentId.value,
   });
-  friend = resp.data;
-  console.log('friend:',friend);
+  // friend = reactive(resp.data);
+  friend.id = resp.data.id;
+  friend.userName = resp.data.userName;
+  friend.userCode = resp.data.userCode;
+  friend.avatar = resp.data.avatar;
+  console.log("friend:", friend);
 }
 // 发送消息
 function onSubmit() {
@@ -79,7 +81,7 @@ function onSubmit() {
   let message: MessageData = {
     cat: 1,
     type: 1,
-    sendTime: new Date(),
+    sendTime: dayjs().format("YYYY-MM-DD HH:mm:ss"),
     messageType: 1,
     dict: 1,
     content: sendContent.value,
@@ -91,9 +93,10 @@ function onSubmit() {
   WSService.Instance.send(message);
   WSService.Instance.ws.onmessage = (mes) => {
     console.log(mes.data);
-    demoMes.push(JSON.parse(mes.data));
+    demoMes.msgs.push(JSON.parse(mes.data));
     console.log(demoMes);
   };
+  sendContent.value = "";
 }
 const onBack = function () {
   router.back();

@@ -17,7 +17,7 @@
 defineProps<{
   username: string;
   mesContent: string;
-  sendTime: Date;
+  sendTime: string;
   avator: string;
   dict: number;
 }>();

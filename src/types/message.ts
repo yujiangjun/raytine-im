@@ -2,7 +2,7 @@ export interface MessageData {
   msgId?: string;
   cat: number;
   type: number;
-  sendTime: Date;
+  sendTime: string;
   messageType: number;
   dict: number;
   content: string;

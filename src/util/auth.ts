@@ -3,10 +3,10 @@ function getBaseUrl() {
 }
 
 function getToken() {
-  return localStorage.getItem("token");
+  return sessionStorage.getItem("token");
 }
 function setToken(token: string) {
-  localStorage.setItem("token", token);
+  sessionStorage.setItem("token", token);
 }
 
 export { getBaseUrl, getToken, setToken };

@@ -5,6 +5,7 @@ import { Toast } from "vant";
 import router from "@/router";
 import { Login } from "@/api/login";
 import { setToken } from "@/util/auth";
+import storeUser from "@/stores/user";
 const username = ref("");
 const password = ref("");
 const onSubmit = async (values: any) => {
@@ -14,7 +15,18 @@ const onSubmit = async (values: any) => {
     userCode: username.value,
     password: password.value,
   });
-  setToken(token.data);
+  setToken(token.data.token);
+  const userStore = storeUser();
+  userStore.$patch((state: any) => {
+    state.id = token.data.id;
+    state.userName = token.data.userName;
+    state.password = token.data.password;
+    state.sex = token.data.sex;
+    state.age = token.data.sex;
+    state.avatar = token.data.avatar;
+    state.userCode = token.data.userCode;
+    state.token = token.data.token;
+  });
   console.log(token);
   router.push({
     path: "main/session",

@@ -2,7 +2,7 @@
   <van-row>
     <van-col :span="24">
       <van-nav-bar
-        :title="friend"
+        :title="my.userName"
         left-text="返回"
         left-arrow
         @click-left="onBack"
@@ -11,16 +11,16 @@
   </van-row>
   <van-row>
     <van-col :span="24" class="send_view">
-      <!-- <MessageItem
+      <MessageItem
         v-for="item in demoMes"
-        :key="item.sendId"
-        :avator="item.reciveAvator"
-        :dict="item.mesDict"
+        :key="item.msgId"
+        :avator="item.targetAvatar"
+        :dict="item.dict"
         :mes-content="item.content"
         :send-time="item.sendTime"
-        :username="item.sendName"
+        :username="item.targetName"
         class="mt_10"
-      ></MessageItem> -->
+      ></MessageItem>
     </van-col>
   </van-row>
   <van-row class="mt_20">
@@ -44,29 +44,56 @@
 
 <script setup lang="ts">
 import router from "@/router";
-import { onMounted, ref, type Ref } from "vue";
+import { onMounted, reactive, ref, type Ref } from "vue";
 import { useRoute } from "vue-router";
 // import { getDemoMes } from "@/util/cht";
+import type { Account } from "@/types/friends";
 import MessageItem from "@/components/MessageItem.vue";
+import WSService from "@/ws";
 import { getUserInfo } from "@/api/account";
 import storeUser from "@/stores/user";
-const friend: Ref<string | undefined> = ref("");
-const demoMes = [];
+import type { MessageData } from "@/types/message";
+const my = reactive(storeUser());
+const targentId = ref(useRoute().query.targetId);
+const demoMes: MessageData[] = [];
 const sendContent: Ref<string> = ref("");
+let friend: Account;
 onMounted(async () => {
   console.log("mouted");
   let targentId = useRoute().query.targetId;
   console.log("targetId:", targentId);
-  let resp = await getUserInfo({
-    id: targentId,
-  });
-  console.log(resp);
-  friend.value = storeUser().userName;
+  getUser();
+  // console.log(resp);
+  WSService.Instance.connect(my.id);
 });
-
+async function getUser() {
+  let resp = await getUserInfo({
+    id: targentId.value,
+  });
+  friend = resp.data;
+  console.log('friend:',friend);
+}
 // 发送消息
 function onSubmit() {
   console.log("发闪送消息");
+  let message: MessageData = {
+    cat: 1,
+    type: 1,
+    sendTime: new Date(),
+    messageType: 1,
+    dict: 1,
+    content: sendContent.value,
+    sendUserId: "" + my.id,
+    targetId: "" + targentId.value,
+    targetName: friend.userName,
+    targetAvatar: friend.avatar,
+  };
+  WSService.Instance.send(message);
+  WSService.Instance.ws.onmessage = (mes) => {
+    console.log(mes.data);
+    demoMes.push(JSON.parse(mes.data));
+    console.log(demoMes);
+  };
 }
 const onBack = function () {
   router.back();

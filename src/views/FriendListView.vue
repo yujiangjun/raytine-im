@@ -3,10 +3,17 @@ import { reactive } from "vue";
 import { getFriends } from "../util/friend";
 import FriendItem from "../components/FriendItem.vue";
 import type { Account } from "@/types/friends";
+import router from "@/router";
 const firends = reactive(await getFriends());
 console.log(firends);
 const goChat = function (item: Account) {
   console.log(item.id);
+  router.push({
+    path: "/singleChat",
+    query: {
+      targetId: item.id,
+    },
+  });
 };
 </script>
 <template>

@@ -11,7 +11,7 @@
   </van-row>
   <van-row>
     <van-col :span="24" class="send_view">
-      <MessageItem
+      <!-- <MessageItem
         v-for="item in demoMes"
         :key="item.sendId"
         :avator="item.reciveAvator"
@@ -20,7 +20,7 @@
         :send-time="item.sendTime"
         :username="item.sendName"
         class="mt_10"
-      ></MessageItem>
+      ></MessageItem> -->
     </van-col>
   </van-row>
   <van-row class="mt_20">
@@ -46,18 +46,22 @@
 import router from "@/router";
 import { onMounted, ref, type Ref } from "vue";
 import { useRoute } from "vue-router";
-import { getDemoMes } from "@/util/cht";
+// import { getDemoMes } from "@/util/cht";
 import MessageItem from "@/components/MessageItem.vue";
-const friend: Ref<string | undefined> = ref("张三");
-const demoMes = getDemoMes();
+import { getUserInfo } from "@/api/account";
+import storeUser from "@/stores/user";
+const friend: Ref<string | undefined> = ref("");
+const demoMes = [];
 const sendContent: Ref<string> = ref("");
-onMounted(() => {
+onMounted(async () => {
   console.log("mouted");
-  console.log(useRoute().query.username);
-  friend.value = useRoute().query.username?.toString();
-  console.log(friend.value);
-  friend.value = "李四";
-  console.log(friend.value);
+  let targentId = useRoute().query.targetId;
+  console.log("targetId:", targentId);
+  let resp = await getUserInfo({
+    id: targentId,
+  });
+  console.log(resp);
+  friend.value = storeUser().userName;
 });
 
 // 发送消息

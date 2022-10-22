@@ -76,8 +76,12 @@ class HttpService {
       });
   }
 
-  get<T>(url: string, config?: AxiosRequestConfig) {
-    return this.handleErrorWrapper<T>(this.http.get(url, config));
+  get<T>(url: string, params?: any) {
+    return this.handleErrorWrapper<T>(
+      this.http.get(url, {
+        params: params,
+      })
+    );
   }
 
   post<T>(url: string, param: unknown, config?: AxiosRequestConfig) {

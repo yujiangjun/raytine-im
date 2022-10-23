@@ -5,7 +5,8 @@ import SessionItem from "../components/SessionItem.vue";
 import { getMySessionList } from "@/api/message/index";
 import router from "@/router";
 import type { Session } from "@/types/session";
-import storeUser from "@/stores/user";
+// import storeUser from "@/stores/user";
+import { getUserInfo } from "@/util/auth";
 let sessions = reactive({
   sessionList: [] as Session[],
 });
@@ -19,7 +20,7 @@ const goChat = function (item: any) {
 };
 onMounted(async () => {
   let resp = await getMySessionList({
-    myId: storeUser().id,
+    myId: getUserInfo().id,
   });
   console.log(resp.data);
   sessions.sessionList = resp.data;

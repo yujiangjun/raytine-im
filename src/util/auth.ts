@@ -1,3 +1,5 @@
+import type { Account } from "@/types/friends";
+
 function getBaseUrl() {
   return "http://localhost:8080/";
 }
@@ -11,5 +13,10 @@ function getToken() {
 function setToken(token: string) {
   sessionStorage.setItem("token", token);
 }
-
-export { getBaseUrl, getToken, setToken, getWsUrl };
+function saveUserInfo(account: Account) {
+  sessionStorage.setItem("user", JSON.stringify(account));
+}
+function getUserInfo(): Account {
+  return JSON.parse(sessionStorage.getItem("user") || "");
+}
+export { getBaseUrl, getToken, setToken, getWsUrl, saveUserInfo, getUserInfo };

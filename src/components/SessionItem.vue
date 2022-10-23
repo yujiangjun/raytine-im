@@ -3,10 +3,12 @@
     <van-image :radius="5" :src="avator" class="avator_small" />
     <div>
       <div class="ml_20">
-        <label>{{ username }}：</label>
-        <label>{{ mesContent }}</label>
+        <label style="font-weight: 700">{{ username }}:</label>
+        <label style="font-size: 12px; margin-left: 10px"
+          ><i>{{ mesContent }}</i></label
+        >
       </div>
-      <div class="ml_20">时间： {{ sendTime }}</div>
+      <div class="ml_20 font_small">时间： {{ sendTime }}</div>
     </div>
   </div>
 </template>

@@ -15,3 +15,6 @@
 .display_flex{
     display: flex;
 }
+.font_small {
+    font-size: 12px;
+}

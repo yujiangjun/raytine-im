@@ -50,10 +50,10 @@ import type { Account } from "@/types/friends";
 import MessageItem from "@/components/MessageItem.vue";
 import WSService from "@/ws";
 import { getUserInfo } from "@/api/account";
-import storeUser from "@/stores/user";
+import { getUserInfo as getUserInfoFromSession } from "@/util/auth";
 import type { MessageData } from "@/types/message";
-import dayjs from 'dayjs';
-const my = reactive(storeUser());
+import dayjs from "dayjs";
+const my = reactive(getUserInfoFromSession());
 const targentId = ref(useRoute().query.targetId);
 const demoMes = reactive({
   msgs: [] as MessageData[],
@@ -91,7 +91,7 @@ function onSubmit() {
     targetAvatar: friend.avatar,
   };
   WSService.Instance.send(message);
-  WSService.Instance.ws.onmessage = (mes) => {
+  (WSService.Instance.ws || ({} as WebSocket)).onmessage = (mes) => {
     console.log(mes.data);
     demoMes.msgs.push(JSON.parse(mes.data));
     console.log(demoMes);

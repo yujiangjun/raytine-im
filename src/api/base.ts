@@ -37,7 +37,7 @@ class HttpService {
     http.interceptors.request.use((config: AxiosRequestConfig) => {
       const token = getToken();
       if (token) {
-        config.headers["token"] = token;
+        config.headers!["token"] = token;
       }
       config.validateStatus = (status) => {
         switch (status) {
@@ -71,8 +71,8 @@ class HttpService {
       })
       .catch((error: AxiosError) => {
         return {
-          ...error.response?.data,
-        };
+          ...(error.response?.data as object),
+        } as T;
       });
   }
 

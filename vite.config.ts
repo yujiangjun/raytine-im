@@ -14,6 +14,11 @@ export default defineConfig({
   server: {
     proxy: {
       "/account": {
+        target: "http://localhost:8889",
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api/, ""),
+      },
+      "/message": {
         target: "http://localhost:8080",
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, ""),

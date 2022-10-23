@@ -11,16 +11,26 @@
   </van-row>
   <van-row>
     <van-col :span="24" class="send_view">
-      <MessageItem
+      <div
         v-for="item in demoMes.msgs"
         :key="item.msgId"
-        :avator="item.targetAvatar"
-        :dict="item.dict"
-        :mes-content="item.content"
-        :send-time="item.sendTime"
-        :username="item.targetName"
-        class="mt_10"
-      ></MessageItem>
+        style="display: flex; justify-content: center"
+      >
+        <MessageItem
+          v-if="item.cat == 1"
+          :avator="item.sendAvatar"
+          :dict="item.dict"
+          :mes-content="item.content"
+          :send-time="item.sendTime"
+          :username="item.sendUserName"
+          class="mt_10"
+        />
+        <label
+          v-else-if="item.cat == 3 && item.targetId == '' + my.id"
+          class="font_small"
+          >已读</label
+        >
+      </div>
     </van-col>
   </van-row>
   <van-row class="mt_20">
@@ -30,6 +40,7 @@
           v-model="sendContent"
           name="消息"
           placeholder="请输入要发送的内容"
+          @focus="ack"
           :rules="[{ required: true, message: '请输入要发送的内容' }]"
         />
         <div style="margin: 16px">
@@ -86,12 +97,15 @@ function onSubmit() {
     dict: 1,
     content: sendContent.value,
     sendUserId: "" + my.id,
+    sendUserName: my.userName,
+    sendAvatar: my.avatar,
     targetId: "" + targentId.value,
     targetName: friend.userName,
     targetAvatar: friend.avatar,
   };
   WSService.Instance.send(message);
-  (WSService.Instance.ws || ({} as WebSocket)).onmessage = (mes) => {
+  WSService.Instance.ws.onmessage = (mes) => {
+    console.log("接收消息");
     console.log(mes.data);
     demoMes.msgs.push(JSON.parse(mes.data));
     console.log(demoMes);
@@ -100,6 +114,24 @@ function onSubmit() {
 }
 const onBack = function () {
   router.back();
+};
+const ack = function () {
+  console.log("ack");
+  let message: MessageData = {
+    cat: 3,
+    type: 1,
+    sendTime: dayjs().format("YYYY-MM-DD HH:mm:ss"),
+    messageType: 1,
+    dict: 1,
+    content: sendContent.value,
+    sendUserId: "" + my.id,
+    sendUserName: my.userName,
+    sendAvatar: my.avatar,
+    targetId: "" + targentId.value,
+    targetName: friend.userName,
+    targetAvatar: friend.avatar,
+  };
+  WSService.Instance.send(message);
 };
 </script>
 

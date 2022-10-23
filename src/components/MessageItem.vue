@@ -3,7 +3,11 @@
     <van-image :radius="5" :src="avator" class="avator_small" />
     <div>
       <div class="ml_20">
-        <label>{{ username }}：</label>
+        <label
+          >{{ username }}:<van-icon v-if="dict == 1" name="back-top" /><van-icon
+            name="down"
+            v-else
+        /></label>
         <div v-if="dict === 0" class="message_conent_receive">
           {{ mesContent }}
         </div>

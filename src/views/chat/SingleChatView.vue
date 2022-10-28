@@ -63,6 +63,7 @@ import WSService from "@/ws";
 import { getUserInfo } from "@/api/account";
 import { getUserInfo as getUserInfoFromSession } from "@/util/auth";
 import type { MessageData } from "@/types/message";
+import { saveMes, getMes } from "@/util/messsage";
 import dayjs from "dayjs";
 const my = reactive(getUserInfoFromSession());
 const targentId = ref(useRoute().query.targetId);
@@ -74,7 +75,12 @@ let friend: Account = reactive({} as Account);
 onMounted(async () => {
   getUser();
   WSService.Instance.connect(my.id);
+  loadLastMes();
 });
+async function loadLastMes() {
+  const id: string = useRoute().query.targetId || "";
+  demoMes.msgs = getMes(id);
+}
 async function getUser() {
   let resp = await getUserInfo({
     id: targentId.value,
@@ -107,8 +113,14 @@ function onSubmit() {
   WSService.Instance.ws.onmessage = (mes) => {
     console.log("接收消息");
     console.log(mes.data);
-    demoMes.msgs.push(JSON.parse(mes.data));
+    const resp: MessageData = JSON.parse(mes.data);
+    demoMes.msgs.push(resp);
     console.log(demoMes);
+    if (resp.sendUserId !== "" + my.id) {
+      saveMes(resp.sendUserId, resp);
+    } else {
+      saveMes(resp.targetId, resp);
+    }
   };
   sendContent.value = "";
 }

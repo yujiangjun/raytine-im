@@ -74,7 +74,7 @@ const sendContent: Ref<string> = ref("");
 let friend: Account = reactive({} as Account);
 onMounted(async () => {
   getUser();
-  WSService.Instance.connect(my.id);
+  // WSService.Instance.connect(my.id);
   loadLastMes();
 });
 async function loadLastMes() {
@@ -136,12 +136,12 @@ const ack = function () {
     messageType: 1,
     dict: 1,
     content: sendContent.value,
-    sendUserId: "" + my.id,
-    sendUserName: my.userName,
-    sendAvatar: my.avatar,
-    targetId: "" + targentId.value,
-    targetName: friend.userName,
-    targetAvatar: friend.avatar,
+    sendUserId: "" + targentId.value,
+    sendUserName: friend.userName,
+    sendAvatar: friend.avatar,
+    targetId: "" + my.id,
+    targetName: my.userName,
+    targetAvatar: my.avatar,
   };
   WSService.Instance.send(message);
 };

@@ -15,6 +15,7 @@ import {
   Icon,
   Divider,
   NavBar,
+  Badge,
 } from "vant";
 
 import App from "./App.vue";
@@ -45,5 +46,6 @@ app.use(Row);
 app.use(Icon);
 app.use(Divider);
 app.use(NavBar);
+app.use(Badge);
 
 app.mount("#app");

@@ -8,4 +8,5 @@ export interface Session {
   targetAvatar: string;
   sessionTime: string;
   msgContent: string;
+  unReadCount?: number;
 }

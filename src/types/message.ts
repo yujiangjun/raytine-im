@@ -13,3 +13,11 @@ export interface MessageData {
   targetName: string;
   targetAvatar: string;
 }
+export interface UnReadUserCountVo {
+  sendUserId: string;
+  count: number;
+}
+export interface UnReadCountVo {
+  total: number;
+  userCountList: UnReadUserCountVo[];
+}

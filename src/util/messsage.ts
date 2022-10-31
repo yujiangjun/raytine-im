@@ -11,5 +11,8 @@ export function saveMes(targetId: string, message: MessageData) {
 }
 
 export function getMes(targetId: string): MessageData[] {
+  if (!localStorage.getItem("message_" + targetId)) {
+    return [];
+  }
   return JSON.parse(localStorage.getItem("message_" + targetId) || "");
 }

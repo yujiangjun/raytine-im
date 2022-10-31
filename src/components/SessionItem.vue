@@ -1,6 +1,8 @@
 <template>
   <div class="display_flex">
-    <van-image :radius="5" :src="avator" class="avator_small" />
+    <van-badge :content="unReadCount">
+      <van-image :radius="5" :src="avator" class="avator_small" />
+    </van-badge>
     <div>
       <div class="ml_20">
         <label style="font-weight: 700">{{ username }}:</label>
@@ -19,5 +21,6 @@ const props = defineProps<{
   mesContent: string;
   sendTime: string;
   avator: string;
+  unReadCount?: number;
 }>();
 </script>
